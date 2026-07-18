@@ -21,12 +21,12 @@
       scroll-behavior: smooth;
     }
 
-    /* Modern, clean design with accent colors */
+    /* Modern, clean design with accent colors - same theme */
     :root {
-      --primary: #0f6b3a; /* deep green - trust, growth */
+      --primary: #0f6b3a;
       --primary-light: #1e8b4c;
-      --secondary: #f4b43a; /* optimistic gold */
-      --accent: #0099cc; /* fresh blue for youth/innovation */
+      --secondary: #f4b43a;
+      --accent: #0099cc;
       --dark: #0a1f2f;
       --light-bg: #ffffff;
       --gray-bg: #f0f4f8;
@@ -193,45 +193,121 @@
       margin-bottom: 45px;
     }
 
-    /* Hero (Home) */
-    .hero {
-      background: linear-gradient(103deg, #e9f7ef 0%, #ffffff 90%);
+    /* ------- NEW HERO SLIDER ------- */
+    .hero-slider {
+      position: relative;
+      width: 100%;
       border-radius: 40px;
-      margin: 20px 0;
+      overflow: hidden;
+      margin: 20px 0 30px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+      background: #e9f7ef; /* fallback */
+    }
+
+    .slides-container {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+      width: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding: 40px 50px;
+      padding: 50px 55px;
+      background: linear-gradient(103deg, #e9f7ef 0%, #ffffff 90%);
     }
 
-    .hero-content {
+    .slide-content {
       flex: 1 1 400px;
     }
 
-    .hero-content h1 {
+    .slide-content h1 {
       font-size: 3.2rem;
       font-weight: 700;
       line-height: 1.2;
       color: #0a1f2f;
     }
 
-    .hero-content h1 span {
+    .slide-content h1 span {
       color: var(--primary);
       border-bottom: 4px solid var(--secondary);
     }
 
-    .hero-image {
+    .slide-image {
       flex: 1 1 300px;
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
-    .hero-image i {
+    .slide-image i {
       font-size: 13rem;
       color: var(--primary-light);
       opacity: 0.8;
       filter: drop-shadow(0 12px 14px rgba(0,0,0,0.08));
+    }
+
+    /* Slider controls */
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.85);
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+    }
+
+    .slider-btn:hover {
+      background: white;
+      color: #0a5e30;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+    }
+
+    .prev-btn {
+      left: 20px;
+    }
+
+    .next-btn {
+      right: 20px;
+    }
+
+    .dots-container {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: rgba(15,107,58,0.3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .dot.active {
+      background: var(--primary);
+      width: 28px;
+      border-radius: 12px;
     }
 
     /* Cards */
@@ -289,7 +365,6 @@
       transform: scale(1.02);
     }
 
-    /* Courses table-like */
     .course-list {
       display: flex;
       flex-direction: column;
@@ -316,7 +391,6 @@
       font-size: 0.8rem;
     }
 
-    /* Footer */
     footer {
       background: #0a1f2f;
       color: #e0e9f0;
@@ -347,18 +421,29 @@
         display: flex;
       }
 
-      .hero {
+      .slide {
         flex-direction: column;
         padding: 35px 24px;
         text-align: center;
       }
 
-      .hero-content h1 {
+      .slide-content h1 {
         font-size: 2.4rem;
+      }
+
+      .slide-image i {
+        font-size: 7rem;
+        margin-top: 20px;
       }
 
       .section-title {
         font-size: 2rem;
+      }
+
+      .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
       }
     }
   </style>
@@ -386,18 +471,57 @@
   <main class="container">
     <!-- Home Page -->
     <div id="home" class="page active">
-      <div class="hero">
-        <div class="hero-content">
-          <h1>Shape Your <span>Future</span><br>with Rivers Youth</h1>
-          <p style="font-size:1.2rem; margin: 20px 0 25px; color:#2d3f4e;">Empowering young leaders through skills, innovation, and community action.</p>
-          <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <a href="#" class="btn btn-primary" id="exploreCoursesBtn"><i class="fas fa-graduation-cap"></i> Explore Courses</a>
-            <a href="#" class="btn btn-outline" id="joinAboutBtn"><i class="fas fa-info-circle"></i> Learn More</a>
+      <!-- IMAGE SLIDER HERO -->
+      <div class="hero-slider">
+        <div class="slides-container" id="slidesContainer">
+          <!-- Slide 1 -->
+          <div class="slide">
+            <div class="slide-content">
+              <h1>Shape Your <span>Future</span><br>with Rivers Youth</h1>
+              <p style="font-size:1.2rem; margin: 20px 0 25px; color:#2d3f4e;">Empowering young leaders through skills, innovation, and community action.</p>
+              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#" class="btn btn-primary" id="exploreCoursesBtn"><i class="fas fa-graduation-cap"></i> Explore Courses</a>
+                <a href="#" class="btn btn-outline" id="joinAboutBtn"><i class="fas fa-info-circle"></i> Learn More</a>
+              </div>
+            </div>
+            <div class="slide-image">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="slide">
+            <div class="slide-content">
+              <h1>Build <span>Skills</span><br>for Tomorrow</h1>
+              <p style="font-size:1.2rem; margin: 20px 0 25px; color:#2d3f4e;">Tech, agriculture, and creative programs designed for Rivers State youth.</p>
+              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#" class="btn btn-primary" id="exploreCoursesBtn2"><i class="fas fa-laptop-code"></i> View Programs</a>
+                <a href="#" class="btn btn-outline" id="joinAboutBtn2"><i class="fas fa-users"></i> Join Community</a>
+              </div>
+            </div>
+            <div class="slide-image">
+              <i class="fas fa-seedling"></i>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="slide">
+            <div class="slide-content">
+              <h1>Ignite <span>Change</span><br>in Your Community</h1>
+              <p style="font-size:1.2rem; margin: 20px 0 25px; color:#2d3f4e;">Join workshops, mentorship, and impact projects across Rivers State.</p>
+              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#" class="btn btn-primary" id="exploreCoursesBtn3"><i class="fas fa-calendar-alt"></i> Upcoming Events</a>
+                <a href="#" class="btn btn-outline" id="joinAboutBtn3"><i class="fas fa-heart"></i> Support Us</a>
+              </div>
+            </div>
+            <div class="slide-image">
+              <i class="fas fa-sun"></i>
+            </div>
           </div>
         </div>
-        <div class="hero-image">
-          <i class="fas fa-hands-helping"></i>
-        </div>
+        <!-- Navigation Arrows -->
+        <button class="slider-btn prev-btn" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next-btn" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+        <!-- Dots -->
+        <div class="dots-container" id="dotsContainer"></div>
       </div>
 
       <section>
@@ -490,7 +614,7 @@
 
   <script>
     (function() {
-      // Page navigation system
+      // ----- Page navigation system -----
       const pages = document.querySelectorAll('.page');
       const navItems = document.querySelectorAll('.nav-item');
       const menuToggle = document.getElementById('menuToggle');
@@ -503,7 +627,6 @@
         const activePage = document.getElementById(pageId);
         if (activePage) activePage.classList.add('active');
         
-        // Close mobile menu after click
         if (navLinks.classList.contains('show')) {
           navLinks.classList.remove('show');
         }
@@ -513,42 +636,116 @@
         item.addEventListener('click', function(e) {
           e.preventDefault();
           const pageId = this.getAttribute('data-page');
-          if (pageId) {
-            switchPage(pageId);
-          }
+          if (pageId) switchPage(pageId);
         });
       });
 
-      // Logo click goes to home
       document.getElementById('logoLink').addEventListener('click', function(e) {
         e.preventDefault();
         switchPage('home');
       });
 
-      // Mobile menu toggle
       menuToggle.addEventListener('click', function() {
         navLinks.classList.toggle('show');
       });
 
-      // Buttons that link to other pages
-      const exploreBtn = document.getElementById('exploreCoursesBtn');
-      if (exploreBtn) {
-        exploreBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          switchPage('courses');
+      // ----- Slider functionality -----
+      const slidesContainer = document.getElementById('slidesContainer');
+      const slides = document.querySelectorAll('.slide');
+      const prevBtn = document.getElementById('prevSlide');
+      const nextBtn = document.getElementById('nextSlide');
+      const dotsContainer = document.getElementById('dotsContainer');
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      let autoPlayInterval;
+
+      // Create dots dynamically
+      function createDots() {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('span');
+          dot.classList.add('dot');
+          if (i === 0) dot.classList.add('active');
+          dot.dataset.index = i;
+          dot.addEventListener('click', function() {
+            goToSlide(parseInt(this.dataset.index));
+            resetAutoPlay();
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+      createDots();
+
+      function updateDots(index) {
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
         });
       }
 
-      const joinAboutBtn = document.getElementById('joinAboutBtn');
-      if (joinAboutBtn) {
-        joinAboutBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          switchPage('about');
-        });
+      function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+        slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateDots(currentIndex);
       }
 
-      // Also handle any other internal linking if needed
-      // Close menu when clicking outside (optional)
+      function nextSlide() {
+        goToSlide(currentIndex + 1);
+      }
+
+      function prevSlide() {
+        goToSlide(currentIndex - 1);
+      }
+
+      function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000);
+      }
+
+      function resetAutoPlay() {
+        clearInterval(autoPlayInterval);
+        startAutoPlay();
+      }
+
+      prevBtn.addEventListener('click', () => {
+        prevSlide();
+        resetAutoPlay();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        nextSlide();
+        resetAutoPlay();
+      });
+
+      // Start autoplay
+      startAutoPlay();
+
+      // Pause on hover (optional but nice)
+      const sliderElement = document.querySelector('.hero-slider');
+      sliderElement.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+      sliderElement.addEventListener('mouseleave', startAutoPlay);
+
+      // ----- Button link handlers (same theme, connecting to pages) -----
+      function bindButton(selector, targetPage) {
+        const btn = document.getElementById(selector);
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchPage(targetPage);
+          });
+        }
+      }
+
+      bindButton('exploreCoursesBtn', 'courses');
+      bindButton('joinAboutBtn', 'about');
+      bindButton('exploreCoursesBtn2', 'courses');
+      bindButton('joinAboutBtn2', 'about');
+      bindButton('exploreCoursesBtn3', 'courses');
+      bindButton('joinAboutBtn3', 'about');
+
+      // Close mobile menu when clicking outside
       document.addEventListener('click', function(event) {
         const isClickInsideNav = event.target.closest('#navLinks') || event.target.closest('#menuToggle');
         if (!isClickInsideNav && navLinks.classList.contains('show')) {
